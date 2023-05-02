@@ -1,16 +1,15 @@
 # Progetto Programmazione e laboratorio A.A. 2022/2023
 
-**Nota**: se trovate imprecisioni/errori o volete un chiarimento su parti di questo documento o di json.hpp, aprite una GitHub issue (pulsante "issues" in alto) citando la linea del file in questione. Per citare una particolare linea di json.hpp o di README.md, seguite questa guida:
 
-https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-a-permanent-link-to-a-code-snippet 
 
 Scopo del progetto è scrivere un parser (tramite grammatiche context-free) di file in formato json. Il contenuto del file deve essere salvato in un container C++ che permetta l’accesso (tramite iteratori e overloading di operatori) del contenuto letto dal file json.
 
 Nelle due sezioni seguenti vengono introdotti il formato json e la descrizione del container da realizzare. 
 
-Se qualcosa non è chiaro o se trovate errori/imprecisioni, aggiungete commenti a questo google doc (pulsante “aggiungi commento” in alto).
 
-  
+**Nota**: se trovate imprecisioni/errori o volete un chiarimento su parti di questo documento o di json.hpp, aprite una GitHub issue (pulsante "issues" in alto) citando la linea del file in questione. Per citare una particolare linea di json.hpp o di README.md, seguite questa guida:
+
+https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-a-permanent-link-to-a-code-snippet 
 
 
 ## 1. Formato json
