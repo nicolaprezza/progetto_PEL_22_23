@@ -1,10 +1,11 @@
+
 # Progetto Programmazione e laboratorio A.A. 2022/2023
 
 
 
 Scopo del progetto è scrivere un parser (tramite grammatiche context-free) di file in formato json. Il contenuto del file deve essere salvato in un container C++ che permetta l’accesso (tramite iteratori e overloading di operatori) del contenuto letto dal file json.
 
-Nelle due sezioni seguenti vengono introdotti il formato json e la descrizione del container da realizzare. 
+Nelle due sezioni seguenti vengono introdotti il formato json e la descrizione del container da realizzare. 
 
 
 **Nota**: se trovate imprecisioni/errori o volete un chiarimento su parti di questo documento o di json.hpp, aprite una GitHub issue (pulsante "issues" in alto) citando la linea del file in questione. Per citare una particolare linea di README.md, aprite il file (cliccando su README.md in alto), rendete visibili le linee (pulsante <> "display the source blob"), selezionate i numeri di linea interessati -> cliccate i tre puntini -> "copy permalink". A questo punto, potete incollare il link copiato nella issue. Analogo per json.hpp (in questo caso i numeri di linea sono immediatamente visibili).
@@ -13,7 +14,7 @@ Nelle due sezioni seguenti vengono introdotti il formato json e la descrizione d
 
 Si vuole scrivere un parser per una variante _semplificata_ di json – un formato testuale per lo scambio di informazione sul Web. **Importante**: usate la descrizione json fornita di seguito e non quella trovata in rete.
 
-Un file json contiene dati in una struttura ad albero (ricorsiva), simile al formato XML. A differenza di XML, il formato json ammette sia **liste** di valori che **dizionari** (definiti nel dettaglio qui sotto). Globalmente, un file json è una lista oppure un dizionario. 
+Un file json contiene dati in una struttura ad albero (ricorsiva), simile al formato XML. A differenza di XML, il formato json ammette sia **liste** di valori che **dizionari** (definiti nel dettaglio qui sotto). Globalmente, un file json è una lista oppure un dizionario. 
 
 ### Liste
 
@@ -27,35 +28,35 @@ Il seguente è un esempio di un semplice file json di tipo lista (ossia, l’int
         "seconda stringa",
         34.5,
         true,
-        null, 
+        null, 
         [1,2,false,43]
     ]
 
 
-**Nota.** I separatori (newline, tab, spazi) vanno ignorati. L’unica eccezione sono i separatori racchiusi tra doppi apici  (per esempio, lo spazio in "prima stringa"): in questo caso, i separatori devono fare parte della stringa estratta dal file. 
+**Nota.** I separatori (newline, tab, spazi) vanno ignorati. L’unica eccezione sono i separatori racchiusi tra doppi apici  (per esempio, lo spazio in "prima stringa"): in questo caso, i separatori devono fare parte della stringa estratta dal file. 
 
 
-**Una nota importante sulle stringhe**: tutti i caratteri tra virgolette vanno estratti tali e quali, eccetto un unico caso: se incontrate un'occorrenza di \" (backslash seguito da doppie virgolette), allora quelle doppie virgolette **non** vanno interpretate come il segnale di fine stringa, ma nella stringa che state costruendo va inserito il carattere " (doppie virgolette). 
+**Una nota importante sulle stringhe**: tutti i caratteri tra le doppie virgolette vanno estratti tali e quali, eccetto un unico caso: se incontrate un'occorrenza di \\" (backslash seguito da doppie virgolette), allora quelle doppie virgolette **non** vanno interpretate come il segnale di fine stringa, ma nella stringa che state costruendo va inserito il carattere " (doppie virgolette). 
 
 **Nota bene**: abbiamo semplificato il formato json originale, che considera molti altri casi di caratteri preceduti da \ (i cosiddetti caratteri *escaped*). E' quindi importante seguire la nostra specifica, non quelle che trovate online!
 
-Per esempio, considerate il seguente file json: 
+Per esempio, considerate il seguente file json: 
 
     [
         "una stringa con caratteri \"escape\"",
         "seconda stringa senza escape",
-        "terza stringa con \altri\" escape\n",
+        "terza stringa \n con altri\" escape",
         "doppio \\" escape",
     ]
 
-Nell’esempio sopra, le quattro stringhe da estrarre dal file sono, rispettivamente: 
+Nell’esempio sopra, le quattro stringhe da estrarre dal file sono, rispettivamente: 
 
-1. una stringa con caratteri "escape"
-2. seconda stringa senza escape
-3. terza stringa con \\altri" escape\\n
-4. doppio \\" escape"
+	una stringa con caratteri "escape"
+	seconda stringa senza escape
+	terza stringa \n con altri" escape\n
+	doppio \" escape
 
-**Nota.** Nel primo caso, gli apici preceduti da ‘\\’ non sono stati interpretati come un comando di fine/inizio stringa, ma sono stati estratti e fanno parte della stringa restituita. Nel terzo caso, le due parentesi graffe fanno parte della stringa restituita. Nel quarto caso (doppio escape “\\\\”), la stringa estratta contiene un occorrenza di ‘\\’ (la seconda). Nel quinto caso, la prima occorrenza di ‘\\’ causa l’estrazione della seconda occorrenza di ‘\\’ come un carattere semplice. La terza occorrenza di ‘\\’ viene interpretata nuovamente come un carattere speciale di escape e sta a significare che il doppio apice seguente " non va interpretato come un carattere speciale, ma va inserito nella stringa estratta.
+**Nota.** Nel primo caso, i doppi apici preceduti da ‘\\’ non sono stati interpretati come un comando di fine/inizio stringa, ma sono stati estratti e fanno parte della stringa restituita (nota: i caratteri \\ non sono invece stati inseriti nella stringa, perchè precedevano i doppi apici). Nel secondo caso non ci sono caratteri \. Nel terzo caso, la sotto-stringa \\n non viene interpretata in un modo speciale, ma questi due caratteri vengono estratti tali e quali. La sotto-stringa \\" invece è trattata in modo speciale ed è stato estratto solo il carattere ". Nel quarto caso (doppio escape \\\\ seguito da "), vengono estratti i due caratteri \\" (la prima backslash \ non è seguita da " quindi viene interpretata come un carattere normale; la seconda è seguita da " e quindi la coppia \\" viene interpretata come un caso particolare e viene estratto solo il simbolo ").
 
   
 
@@ -72,22 +73,22 @@ Per esempio, il seguente file json è di tipo dizionario.
     {
         "prima chiave" : 5,
         "seconda chiave" : [4.12,2,true],
-        "terza \"chiave\"" : "una stringa",
+        "terza chiave" : "una stringa",
         "quarta chiave" : {"a" : 4, "b" : [4,5]}
     }
 
-Nell’esempio qui sopra, il dizionario contiene quattro coppie **chiave : valore**   :
+Nell’esempio qui sopra, il dizionario contiene quattro coppie **chiave : valore**   :
 
 1. Nella prima, la chiave è la stringa **prima chiave** e il valore è l’intero **5**
-2. Nella seconda, la chiave è la stringa **seconda chiave** e il valore è la lista  **\[4.12,2,true]**
-3. Nella terza, la chiave è la stringa **terza "chiave"** (attenzione agli escape!) e il valore è la stringa **una stringa**
+2. Nella seconda, la chiave è la stringa **seconda chiave** e il valore è la lista  **\[4.12,2,true]**
+3. Nella terza, la chiave è la stringa **terza chiave** e il valore è la stringa **una stringa**
 4. Nella quarta, la chiave è la stringa **quarta chiave** e il valore è di nuovo (ricorsivamente) un dizionario: **{"a" : 4, "b" : \[4,5]}**
 
-Notate bene la struttura ricorsiva del formato json: la vostra grammatica deve ammettere annidamenti arbitrari di dizionari e liste. 
+Notate bene la struttura ricorsiva del formato json: la vostra grammatica deve ammettere annidamenti arbitrari di dizionari e liste. 
 
 ### Esempi e dataset su cui testare il parser
 
-Potete usare il seguente database di file json per testare il vostro codice: 
+Potete usare il seguente database di file json per testare il vostro codice: 
 
 <https://github.com/jdorfman/awesome-json-datasets>.
 
@@ -95,7 +96,7 @@ Può tornarvi utile visualizzare un file json in formato ad albero. Per questo, 
 
 <https://jsonviewer.stack.hu/>.
 
-**Nota.** Il visualizzatore sopra racchiude le stringhe tra doppi apici. Il vostro parser invece non deve estrarre i doppi apici che racchiudono le stringhe (vedi esempi sopra). 
+**Nota.** Il visualizzatore sopra racchiude le stringhe tra doppi apici. Il vostro parser invece non deve estrarre i doppi apici che racchiudono le stringhe (vedi esempi sopra). 
 
   
 
@@ -116,12 +117,12 @@ Dove json::impl è una struct (privata) che siete liberi di definire (come visto
 
 1. null,
 2. un numero,
-3. un booleano, 
-4. una stringa, 
+3. un booleano, 
+4. una stringa, 
 5. una lista (di json), oppure
 6. un dizionario (insieme di coppie &lt;stringa, json>).
 
-Una buona idea potrebbe quindi essere quella di definire, dentro  json::impl, una variabile double, una variabile bool, una variabile std::string, una lista di json, e una lista di std::pair&lt;std::string,json> per il dizionario (in aggiunta a metodi e altre variabili che ritenete necessarie). Ogni oggetto json userà solo una di queste cinque variabili (in modo analogo a come abbiamo fatto con la classe token a lezione) e potreste modellare il valore null controllando che ognuna di queste cinque variabili non sia “in uso”.
+Una buona idea potrebbe quindi essere quella di definire, dentro  json::impl, una variabile double, una variabile bool, una variabile std::string, una lista di json, e una lista di std::pair&lt;std::string,json> per il dizionario (in aggiunta a metodi e altre variabili che ritenete necessarie). Ogni oggetto json userà solo una di queste cinque variabili (in modo analogo a come abbiamo fatto con la classe token a lezione) e potreste modellare il valore null controllando che ognuna di queste cinque variabili non sia “in uso”.
 
   
   
@@ -141,9 +142,9 @@ che dovete usare per le eccezioni. Usate la stringa msg per fornire un messaggio
 
     json::impl;
 
-Questa è la struct (privata in json) che potete utilizzare per definire le variabili e metodi che volete usare nell’implementazione di json (come detto sopra, un oggetto json contiene un puntatore impl\*). 
+Questa è la struct (privata in json) che potete utilizzare per definire le variabili e metodi che volete usare nell’implementazione di json (come detto sopra, un oggetto json contiene un puntatore impl\*). 
 
-Ricordate che json::impl ha accesso ai membri privati di json, quindi se lo desiderate dentro json::impl potete anche definire metodi che prendono in input oggetti json e modificano il loro contenuto (accedendo a membri privati di json). 
+Ricordate che json::impl ha accesso ai membri privati di json, quindi se lo desiderate dentro json::impl potete anche definire metodi che prendono in input oggetti json e modificano il loro contenuto (accedendo a membri privati di json). 
 
 
 
@@ -219,7 +220,7 @@ Se l’oggetto non è un dizionario, lanciamo un’eccezione json_exception (con
  
 Se l’oggetto è una lista (is_list() restituisce true), usiamo gli iteratori list_iterator e const_list_iterator per accedere ai membri della lista (a loro volta, degli oggetti json).
 
-I seguenti metodi permettono di ottenere iteratori all’inizio e alla fine della lista. Se  is_list() restituisce false, questi metodi devono lanciare un’eccezione json_exception (con messaggio msg a piacere). 
+I seguenti metodi permettono di ottenere iteratori all’inizio e alla fine della lista. Se  is_list() restituisce false, questi metodi devono lanciare un’eccezione json_exception (con messaggio msg a piacere). 
 
 **Attenzione.** L’ordine degli elementi nella lista deve essere lo stesso del file letto in input. In particolare, gli iteratori devono restituire gli elementi in questo ordine.
 
@@ -230,7 +231,7 @@ I seguenti metodi permettono di ottenere iteratori all’inizio e alla fine dell
 
 ---
 
-In modo analogo, se l’oggetto è un dizionario (is_dictionary() restituisce true), usiamo gli iteratori dict_iterator e const_dict_iterator per accedere alle coppie contenute nel dizionario (le coppie sono di tipo std::pair&lt;std::string,json>). I seguenti metodi permettono di ottenere iteratori all’inizio e alla fine del dizionario. Se  is_dictionary() restituisce false, questi metodi devono lanciare un’eccezione json_exception (con messaggio msg a piacere).
+In modo analogo, se l’oggetto è un dizionario (is_dictionary() restituisce true), usiamo gli iteratori dict_iterator e const_dict_iterator per accedere alle coppie contenute nel dizionario (le coppie sono di tipo std::pair&lt;std::string,json>). I seguenti metodi permettono di ottenere iteratori all’inizio e alla fine del dizionario. Se  is_dictionary() restituisce false, questi metodi devono lanciare un’eccezione json_exception (con messaggio msg a piacere).
 
 **Attenzione.** A differenza degli iteratori su lista, in questo caso non è importante l’ordine in cui vengono immagazzinati e visitati gli elementi del dizionario.
 
@@ -242,7 +243,7 @@ In modo analogo, se l’oggetto è un dizionario (is_dictionary() restituisce tr
   
 ---
 
-Se is_number() è true (l’oggetto è un numero), i metodi qui sotto restituiscono una reference / const reference alla variabile double contenuta nel json (e che potete salvare in json::impl). Se is_number() è false, questo metodo devono lanciare un’eccezione json_exception (con messaggio msg a piacere). 
+Se is_number() è true (l’oggetto è un numero), i metodi qui sotto restituiscono una reference / const reference alla variabile double contenuta nel json (e che potete salvare in json::impl). Se is_number() è false, questo metodo devono lanciare un’eccezione json_exception (con messaggio msg a piacere). 
 
     double& json::get_number();
     double const& json::get_number() const;
@@ -250,14 +251,14 @@ Se is_number() è true (l’oggetto è un numero), i metodi qui sotto restituisc
   
 ---
 
-Se is_bool() è true (l’oggetto è un boolean), questi metodi restituiscono una reference / const reference alla variabile booleana contenuta nel json (e che potete salvare in json::impl). Altrimenti, viene lanciata un’eccezione json_exception (con messaggio msg a piacere). 
+Se is_bool() è true (l’oggetto è un boolean), questi metodi restituiscono una reference / const reference alla variabile booleana contenuta nel json (e che potete salvare in json::impl). Altrimenti, viene lanciata un’eccezione json_exception (con messaggio msg a piacere). 
 
     bool& json::get_bool();
     bool const& json::get_bool() const;
 
 ---
 
-Se is_string() è true (l’oggetto è una stringa), questi metodi restituiscono una reference / const reference alla variabile di tipo stringa stringa contenuta nel json (e che potete salvare in json::impl). Altrimenti, viene lanciata un’eccezione json_exception (con messaggio msg a piacere). 
+Se is_string() è true (l’oggetto è una stringa), questi metodi restituiscono una reference / const reference alla variabile di tipo stringa stringa contenuta nel json (e che potete salvare in json::impl). Altrimenti, viene lanciata un’eccezione json_exception (con messaggio msg a piacere). 
 
     std::string& json::get_string();
     std::string const& json::get_string() const;
@@ -290,14 +291,14 @@ Questo metodo rende il json di tipo null, cancellando gli eventuali dati precede
 
 ---
 
-Questo metodo rende il json di tipo lista, rendendo la lista interna uguale alla lista vuota  e cancellando gli eventuali dati precedentemente memorizzati nel json, _anche nel caso il json fosse una lista_ (per esempio, se il json era di tipo lista, questa funzione deve rimpiazzare la lista con la lista vuota). Dopo la chiamata di questa funzione, is_list() deve restituire true (nessun altro metodo booleano deve restituire true).
+Questo metodo rende il json di tipo lista, rendendo la lista interna uguale alla lista vuota  e cancellando gli eventuali dati precedentemente memorizzati nel json, _anche nel caso il json fosse una lista_ (per esempio, se il json era di tipo lista, questa funzione deve rimpiazzare la lista con la lista vuota). Dopo la chiamata di questa funzione, is_list() deve restituire true (nessun altro metodo booleano deve restituire true).
 
     void json::set_list();
 
 ---
 
 
-Questo metodo rende il json di tipo dizionario, rendendo il dizionario interno uguale al dizionario vuoto  e cancellando gli eventuali dati precedentemente memorizzati nel json, _anche nel caso il json fosse un dizionario_ (per esempio, se il json era di tipo lista, questa funzione deve svuotare la lista e inizializzare il dizionario a quello vuoto). Dopo la chiamata di questa funzione, is_dictionary() deve restituire true (nessun altro metodo booleano deve restituire true).
+Questo metodo rende il json di tipo dizionario, rendendo il dizionario interno uguale al dizionario vuoto  e cancellando gli eventuali dati precedentemente memorizzati nel json, _anche nel caso il json fosse un dizionario_ (per esempio, se il json era di tipo lista, questa funzione deve svuotare la lista e inizializzare il dizionario a quello vuoto). Dopo la chiamata di questa funzione, is_dictionary() deve restituire true (nessun altro metodo booleano deve restituire true).
 
     void json::set_dictionary();
 
@@ -307,7 +308,7 @@ Se il json è di tipo lista (is_list() restituisce true), questo metodo aggiunge
 
 **Importante:** per motivi di efficienza, il metodo non deve scorrere tutta la lista! implementate il metodo come visto a lezione. 
 
-Se il json non è di tipo lista, questa funzione deve lanciare un’eccezione json_exception (con messaggio msg a piacere). 
+Se il json non è di tipo lista, questa funzione deve lanciare un’eccezione json_exception (con messaggio msg a piacere). 
 
     void json::push_front(json const& x);
 
@@ -317,7 +318,7 @@ Se il json è di tipo lista (is_list() restituisce true), questo metodo aggiunge
 
 **Importante:** per motivi di efficienza, il metodo non deve scorrere tutta la lista! implementate il metodo come visto a lezione. 
 
-Se il json non è di tipo lista, questa funzione deve lanciare un’eccezione json_exception (con messaggio msg a piacere). 
+Se il json non è di tipo lista, questa funzione deve lanciare un’eccezione json_exception (con messaggio msg a piacere). 
 
     void json::push_back(json const& x);
 
@@ -327,7 +328,7 @@ Se il json è di tipo dizionario (is_dictionary() restituisce true), questo meto
 
 **Importante:** per motivi di efficienza, il metodo non deve scorrere il contenuto di tutto il dizionario! 
 
-Se il json non è di tipo dizionario, questa funzione deve lanciare un’eccezione json_exception (con messaggio msg a piacere). 
+Se il json non è di tipo dizionario, questa funzione deve lanciare un’eccezione json_exception (con messaggio msg a piacere). 
 
     void json::insert(std::pair<std::string,json> const& x);
 
@@ -356,7 +357,7 @@ Se la funzione riscontra dei problemi durante il parsing, deve venire lanciata u
 Suggeriamo di scrivere il parser come segue (come visto a lezione):
 
 1. Definite una grammatica context-free in grado di riconoscere il formato json, seguendo la descrizione fornita all’inizio del documento.
-2. Create una funzione per ogni simbolo non terminale della grammatica. 
+2. Create una funzione per ogni simbolo non terminale della grammatica. 
 3. Ogni funzione creata al punto 2 dovrebbe ricevere in input una reference a std::istream e restituire in output un oggetto di tipo json. Per esempio, se avete scritto una funzione LIST() che parsa un’intera lista dal’istream in input, questa funzione costruirà un json costruito a partire da quella lista (di oggetti json) e la restituirà. Questo vi permetterà di implementare le funzioni in modo ricorsivo: la funzione LIST, a sua volta, chiamerà funzioni per estrarre i componenti della lista, le quali a loro volta restituiranno degli oggetti json; questi oggetti andranno inseriti all’interno della lista dell’oggetto json restituito da LIST.
 
   
@@ -372,13 +373,13 @@ Il container json creato può essere usato come un editor di file in formato jso
         {
             "prima chiave" : 5,
             "seconda chiave" : [4.12,2,true],
-            "terza \"chiave\"" : "una stringa",
+            "terza chiave" : "una stringa",
             "quarta chiave" : {"a" : 4, "b" : [4,5]}
         },
         3
     ]
 
-allora, il seguente codice è valido e deve stampare a schermo “4”: 
+allora, il seguente codice è valido e deve stampare a schermo “4”: 
 
     json j;
     std::cin >> j;
@@ -386,7 +387,7 @@ allora, il seguente codice è valido e deve stampare a schermo “4”: 
     std::cout << y["quarta chiave"]["a"];
 
 
-Inoltre, la classe ci permette di modificare un oggetto json. Per esempio, se la variabile 
+Inoltre, la classe ci permette di modificare un oggetto json. Per esempio, se la variabile 
 
     json z;
 
@@ -399,14 +400,14 @@ e j è la variabile di tipo json definita sopra, allora dopo l’assegnamento
     (*j.begin_list()+1)["prima chiave"] = z
 
  
-La variabile j deve contenere i seguenti dati: 
+La variabile j deve contenere i seguenti dati: 
 
     [
         1,
         {
             "prima chiave" : {"c" : 5, "d" : 6},
             "seconda chiave" : [4.12,2,true],
-            "terza \"chiave\"" : "una stringa",
+            "terza chiave" : "una stringa",
             "quarta chiave" : {"a" : 4, "b" : [4,5]}
         },
         3
@@ -415,18 +416,18 @@ La variabile j deve contenere i seguenti dati: 
  
 ## 4. Consegna del progetto
 
-Noi vi forniamo un file json.hpp (in questo repository GitHub) che contiene le dichiarazioni della classe e gli unici #include ammessi. 
+Noi vi forniamo un file json.hpp (in questo repository GitHub) che contiene le dichiarazioni della classe e gli unici #include ammessi. 
 
 **Nota.** Il file json.hpp **non** deve essere modificato in alcun modo. Noi, infatti, compileremo e testeremo il vostro codice con il file json.hpp fornito da noi (e non con quello che voi potreste aver modificato).
 
-Il vostro compito sarà quello di implementare il file json.cpp, contenente l’implementazione di tutti i metodi descritti sopra. Note importanti: 
+Il vostro compito sarà quello di implementare il file json.cpp, contenente l’implementazione di tutti i metodi descritti sopra. Note importanti: 
 
 1. json.cpp può solo includere json.hpp. Non può contenere nessun altro #include e nessuna macro (in generale, nessun codice preceduto da #, eccetto #include json.hpp). Tutti gli include e macro verranno automaticamente rimossi prima di compilare il vostro codice. Gli unici #include ammessi sono quelli presenti nel file json.hpp fornito da noi.
 2. json.cpp non deve definire la funzione main: saremo noi a scriverla per testare il vostro codice. Se definite la funzione main, il codice non compilerà.
 
 ### Formato e link per la consegna
 
-Ogni studente deve consegnare il proprio file json.cpp (con esattamente questo nome), contenuto dentro ad una cartella il cui nome deve essere la matricola dello studente, archiviata e compressa in un file tar.gz creato come descritto qui sotto. Questo archivio è l'unico file che va consegnato tramite il modulo moodle che troverete nella pagina moodle del modulo 1 (<https://moodle.unive.it/course/view.php?id=13453>). 
+Ogni studente deve consegnare il proprio file json.cpp (con esattamente questo nome), contenuto dentro ad una cartella il cui nome deve essere la matricola dello studente, archiviata e compressa in un file tar.gz creato come descritto qui sotto. Questo archivio è l'unico file che va consegnato tramite il modulo moodle che troverete nella pagina moodle del modulo 1 (<https://moodle.unive.it/course/view.php?id=13453>). 
 
 Esempio: se la mia matricola è 012345 e mi trovo dentro ad una cartella contenente la mia implementazione json.cpp, per creare l'archivio devo seguire i seguenti passi (da terminale Ubuntu):
 
@@ -438,14 +439,14 @@ Questi passi creano il file 012345.tar.gz, che deve essere consegnato tramite mo
 
     tar -xvzf 012345.tar.gz
 
-**Importante**: seguite **esattamente** queste istruzioni. Lanceremo uno script che estrae e compila automaticamente tutti i vostri progetti, quindi ogni minimo errore (esempio: archivio non in formato tar.gz, nome cartella sbagliato, nome file diverso da json.cpp) porterà all'esclusione automatica del progetto. 
+**Importante**: seguite **esattamente** queste istruzioni. Lanceremo uno script che estrae e compila automaticamente tutti i vostri progetti, quindi ogni minimo errore (esempio: archivio non in formato tar.gz, nome cartella sbagliato, nome file diverso da json.cpp) porterà all'esclusione automatica del progetto. 
 
 Le scadenze di giugno sono:
 
 - **14 giugno ore 23:59**
 - **27 giugno ore 23:59**
 
-I prossimi appelli saranno a settembre e gennaio. 
+I prossimi appelli saranno a settembre e gennaio. 
 
 Il modulo moodle per la consegna verrà aperto a breve e potrete cominciare a consegnare da subito. Potete ri-consegnare un numero illimitato di volte. Ad intervalli regolari (solitamente, ogni 2 settimane) noi scarichiamo tutti i progetti consegnati e li testiamo, segnalando eventuali problemi (per esempio, memory leaks, segmentation faults, ecc) via mail direttamente agli interessati. Dopo la scadenza il modulo per la consegna verrà disattivato e l’ultima consegna che avete fatto verrà valutata.
 
@@ -457,7 +458,7 @@ Il modulo moodle per la consegna verrà aperto a breve e potrete cominciare a co
 
 Ogni metodo da voi scritto verrà testato da noi in modo accurato, su molti input diversi (file json). Ricordate la regola generale: la scrittura del codice è solo metà del lavoro! La metà rimanente consiste nel progettare dei test approfonditi per rilevare eventuali bug. In fase di valutazione, il nostro compito sarà quello di mettere sotto stress il vostro codice (testandolo sui file più disparati e combinando operatori in tutti i modi possibili), quindi progettate degli ottimi test e ricordatevi di compilare il codice con gli strumenti di debug mostrati a lezione (assert, compiler sanitizers). Ricordatevi anche di usare Valgrind.
 
-Un metodo che porta all’interruzione inaspettata del codice (esempio, segmentation fault) viene valutato 0 punti. Un metodo non implementato viene valutato 0 punti. Alcuni metodi, come quelli su iteratori, sono molto importanti perché ci permettono di testare il vostro codice (accedendo al contenuto del container): fate attenzione ad implementarli correttamente, altrimenti non avremo modo di testare il vostro codice. 
+Un metodo che porta all’interruzione inaspettata del codice (esempio, segmentation fault) viene valutato 0 punti. Un metodo non implementato viene valutato 0 punti. Alcuni metodi, come quelli su iteratori, sono molto importanti perché ci permettono di testare il vostro codice (accedendo al contenuto del container): fate attenzione ad implementarli correttamente, altrimenti non avremo modo di testare il vostro codice. 
 
 ### Timeout
 
@@ -465,7 +466,7 @@ Attenzione: il vostro codice deve essere ragionevolmente veloce. Imposteremo un 
 
 ### Plagi
 
-I vostri codici verranno confrontati utilizzando un rilevatore di plagi. Questo strumento è in grado di rilevare tentativi di mascherare copiature di codice come rinomina di variabili, conversione di cicli for in cicli while, etc. Tutti i progetti coinvolti in copiature saranno considerati falliti automaticamente. Tenete bene a mente queste semplici regole: 
+I vostri codici verranno confrontati utilizzando un rilevatore di plagi. Questo strumento è in grado di rilevare tentativi di mascherare copiature di codice come rinomina di variabili, conversione di cicli for in cicli while, etc. Tutti i progetti coinvolti in copiature saranno considerati falliti automaticamente. Tenete bene a mente queste semplici regole: 
 
-1. **Mai** passare il codice ad uno compagno che deve ancora sostenere l’esame. Costui infatti potrebbe copiare (anche solo in parte), con la conseguenza che entrambi non passerete l’esame. Discutere idee generali sulla soluzione va bene, ma il codice non deve mai essere condiviso. 
+1. **Mai** passare il codice ad uno compagno che deve ancora sostenere l’esame. Costui infatti potrebbe copiare (anche solo in parte), con la conseguenza che entrambi non passerete l’esame. Discutere idee generali sulla soluzione va bene, ma il codice non deve mai essere condiviso. 
 2. Non postate porzioni del vostro codice online (per esempio, su forum). Altri studenti potrebbero copiare il codice ed entrambi non passerete l’esame (in passato è successo anche questo).
