@@ -1,6 +1,6 @@
 # Progetto Programmazione e laboratorio A.A. 2022/2023
 
-**Nota**: se trovate imprecisioni/errori o volete un chiarimento su parti di questo documento o di json.hpp, aprite una GitHub issue citando la linea del file in questione.
+**Nota**: se trovate imprecisioni/errori o volete un chiarimento su parti di questo documento o di json.hpp, aprite una GitHub issue (pulsante "issues" in alto) citando la linea del file in questione.
 
 Scopo del progetto è scrivere un parser (tramite grammatiche context-free) di file in formato json. Il contenuto del file deve essere salvato in un container C++ che permetta l’accesso (tramite iteratori e overloading di operatori) del contenuto letto dal file json.
 
