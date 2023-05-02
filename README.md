@@ -3,12 +3,12 @@
 
 
 
-Scopo del progetto è scrivere un parser (tramite grammatiche context-free) di file in formato json. Il contenuto del file deve essere salvato in un container C++ che permetta l’accesso (tramite iteratori e overloading di operatori) del contenuto letto dal file json.
+Lo scopo del progetto è scrivere un parser (tramite grammatiche context-free) di file in formato json. Il contenuto del file deve essere salvato in un container C++ che permetta l’accesso (tramite iteratori e overloading di operatori) del contenuto letto dal file json.
 
 Nelle due sezioni seguenti vengono introdotti il formato json e la descrizione del container da realizzare. 
 
 
-**Nota**: se trovate imprecisioni/errori o volete un chiarimento su parti di questo documento o di json.hpp, aprite una GitHub issue (pulsante "issues" in alto) citando la linea del file in questione. Per citare una particolare linea di README.md, aprite il file (cliccando su README.md in alto), rendete visibili le linee (pulsante <> "display the source blob"), selezionate i numeri di linea interessati -> cliccate i tre puntini -> "copy permalink". A questo punto, potete incollare il link copiato nella issue. Analogo per json.hpp (in questo caso i numeri di linea sono immediatamente visibili).
+**Nota**: se trovate imprecisioni/errori o volete un chiarimento su parti di questo documento o di json.hpp, aprite una GitHub issue (pulsante "issues" in alto) citando la linea del file in questione. Per citare una particolare linea di README.md, aprite il file (cliccando su README.md in alto), rendete visibili le linee (pulsante `<>` "display the source blob"), selezionate i numeri di linea interessati -> cliccate i tre puntini -> "copy permalink". A questo punto, potete incollare il link copiato nella issue. Analogo per json.hpp (in questo caso i numeri di linea sono immediatamente visibili).
 
 ## 1. Formato json
 
@@ -38,29 +38,29 @@ Il seguente è un esempio di un semplice file json di tipo lista (ossia, l’int
 
 ### Una nota importante sulle stringhe 
 
-tutti i caratteri tra le doppie virgolette vanno estratti tali e quali, eccetto un unico caso: se incontrate un'occorrenza di \\" (backslash seguito da doppie virgolette), allora quelle doppie virgolette **non** vanno interpretate come il segnale di fine stringa, ma nella stringa che state costruendo va inserito il carattere " (doppie virgolette), **non** preceduto dal carattere \\ (backslash). Sotto riportiamo alcuni esempi.
+Tutti i caratteri tra le doppie virgolette vanno estratti tali e quali. Tenete presente che le stringhe possono contenere il carattere `"` preceduto da un carattere di `\`, i.e., la stringa potrebbe contenere la sotto stringa `\"`. In questo caso, quindi, la stringa **non** termina con quella occorrenza di `"`. Le stringhe terminano solo quando il carattere `"` **non** è preceduto da `\`.
 
-**Nota bene**: abbiamo semplificato il formato json originale, che considera molti altri casi di caratteri preceduti da \ (i cosiddetti caratteri *escaped*). E' quindi importante seguire la nostra specifica, non quelle che trovate online!
+**Nota bene**: Fate attenzione a seguire questa regola!
+
+Sotto riportiamo alcuni esempi.
 
 Per esempio, considerate il seguente file json: 
 
     [
-        "una stringa con virgolette \"escaped\"",
+        "una stringa con \n virgolette \"escaped\"",
         "seconda stringa senza escape",
         "terza stringa con altri\" escape",
         "doppio \\" escape",
     ]
 
-Nell’esempio sopra, le quattro stringhe da estrarre dal file (ossia, i caratteri da inserire nelle std::string che andrete a costruire) sono, rispettivamente: 
+Nell’esempio sopra, le quattro stringhe da estrarre dal file (ossia, i caratteri da inserire nelle `std::string` che andrete a costruire) sono, rispettivamente: 
 
-	una stringa con virgolette "escaped"
+	una stringa con \n virgolette \"escaped\"
 	seconda stringa senza escape
-	terza stringa con altri" escape
-	doppio \" escape
+	terza stringa con altri\" escape
+	doppio \\" escape
 
-Nel primo caso, i doppi apici preceduti da ‘\\’ non sono stati interpretati come un comando di fine/inizio stringa, ma sono stati estratti e fanno parte della stringa restituita (nota: i caratteri \\ non sono invece stati inseriti nella stringa, perchè precedevano i doppi apici). Nel secondo caso non ci sono caratteri \. Nel terzo caso, la sotto-stringa \\" è trattata in modo speciale ed è stato estratto solo il carattere ". Nel quarto caso (doppio escape \\\\ seguito da "), vengono estratti i due caratteri \\" (la prima backslash \ non è seguita da " quindi viene interpretata come un carattere normale; la seconda è seguita da " e quindi la coppia \\" viene interpretata come un caso particolare e viene estratto solo il simbolo ").
-
-**Nota** I caratteri speciali "\n" (e simili) non fanno eccezione! se il file json contiene una stringa in cui compare \\n, ad esempio, vanno estratti **due** caratteri: backslash (\\) seguito dal carattere n, **non** va estratto il singolo carattere '\\n' (che significa newline). Di nuovo, questa è una modifica rispetto al formato originale che abbiamo introdotto per semplificare la scrittura del parser.
+**Nota**: I caratteri speciali `\n` (e simili, tipo `\t`, `\r`, etc.) non fanno eccezione! Se il file json contiene una stringa in cui compare `\n`, ad esempio, vanno estratti **due** caratteri: backslash (`\`) seguito dal carattere `n`, **non** va estratto il singolo carattere `\n` (che significa newline). Questa è una modifica rispetto al formato originale che abbiamo introdotto per semplificare la scrittura del parser.
 
 ### Dizionari 
 
