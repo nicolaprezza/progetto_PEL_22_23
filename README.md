@@ -7,10 +7,7 @@ Scopo del progetto è scrivere un parser (tramite grammatiche context-free) di f
 Nelle due sezioni seguenti vengono introdotti il formato json e la descrizione del container da realizzare. 
 
 
-**Nota**: se trovate imprecisioni/errori o volete un chiarimento su parti di questo documento o di json.hpp, aprite una GitHub issue (pulsante "issues" in alto) citando la linea del file in questione. Per citare una particolare linea di json.hpp o di README.md, seguite questa guida:
-
-https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-a-permanent-link-to-a-code-snippet 
-
+**Nota**: se trovate imprecisioni/errori o volete un chiarimento su parti di questo documento o di json.hpp, aprite una GitHub issue (pulsante "issues" in alto) citando la linea del file in questione. Per citare una particolare linea di README.md, aprite il file (cliccando su README.md in alto), rendete visibili le linee (pulsante <> "display the source blob"), selezionate i numeri di linea interessati -> cliccate i tre puntini -> "copy permalink". A questo punto, potete incollare il link copiato nella issue. Analogo per json.hpp (in questo caso i numeri di linea sono immediatamente visibili).
 
 ## 1. Formato json
 
