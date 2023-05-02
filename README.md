@@ -35,23 +35,25 @@ Il seguente è un esempio di un semplice file json di tipo lista (ossia, l’int
 **Nota.** I separatori (newline, tab, spazi) vanno ignorati. L’unica eccezione sono i separatori racchiusi tra doppi apici  (per esempio, lo spazio in "prima stringa"): in questo caso, i separatori devono fare parte della stringa estratta dal file. 
 
 
-**Una nota importante sulle stringhe**: quando un valore è di tipo stringa (come "prima stringa" nell’esempio sopra), questa può contenere caratteri _escape_: ‘\\’. La presenza di un carattere ‘\\’ significa che il parser non deve interpretare il (singolo) carattere seguente come un carattere speciale di json (ad esempio, i doppi apici "). Il carattere escape ‘\\’ non deve essere incluso nella stringa estratta, mentre il carattere che segue sì (nota: il carattere che segue potrebbe essere a sua volta ‘\\’).  Per esempio, considerate il seguente file json: 
+**Una nota importante sulle stringhe**: tutti i caratteri tra virgolette vanno estratti tali e quali, eccetto un unico caso: se incontrate un'occorrenza di \" (backslash seguito da doppie virgolette), allora quelle doppie virgolette **non** vanno interpretate come il segnale di fine stringa, ma nella stringa che state costruendo va inserito il carattere " (doppie virgolette). 
+
+**Nota bene**: abbiamo semplificato il formato json originale, che considera molti altri casi di caratteri preceduti da \ (i cosiddetti caratteri *escaped*). E' quindi importante seguire la nostra specifica, non quelle che trovate online!
+
+Per esempio, considerate il seguente file json: 
 
     [
         "una stringa con caratteri \"escape\"",
         "seconda stringa senza escape",
-        "terza stringa con \{altri\} escape",
-        "doppio escape: \\",
-        "triplo escape: \\\"",
+        "terza stringa con \altri\" escape\n",
+        "doppio \\" escape",
     ]
 
 Nell’esempio sopra, le quattro stringhe da estrarre dal file sono, rispettivamente: 
 
 1. una stringa con caratteri "escape"
 2. seconda stringa senza escape
-3. terza stringa con {altri} escape
-4. doppio escape: \\
-5. triplo escape: \\"
+3. terza stringa con \\altri" escape\\n
+4. doppio \\" escape"
 
 **Nota.** Nel primo caso, gli apici preceduti da ‘\\’ non sono stati interpretati come un comando di fine/inizio stringa, ma sono stati estratti e fanno parte della stringa restituita. Nel terzo caso, le due parentesi graffe fanno parte della stringa restituita. Nel quarto caso (doppio escape “\\\\”), la stringa estratta contiene un occorrenza di ‘\\’ (la seconda). Nel quinto caso, la prima occorrenza di ‘\\’ causa l’estrazione della seconda occorrenza di ‘\\’ come un carattere semplice. La terza occorrenza di ‘\\’ viene interpretata nuovamente come un carattere speciale di escape e sta a significare che il doppio apice seguente " non va interpretato come un carattere speciale, ma va inserito nella stringa estratta.
 
