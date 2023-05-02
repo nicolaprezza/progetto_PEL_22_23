@@ -36,7 +36,7 @@ Il seguente è un esempio di un semplice file json di tipo lista (ossia, l’int
 **Nota.** I separatori (newline, tab, spazi) vanno ignorati. L’unica eccezione sono i separatori racchiusi tra doppi apici  (per esempio, lo spazio in "prima stringa"): in questo caso, i separatori devono fare parte della stringa estratta dal file. 
 
 
-**Una nota importante sulle stringhe**: tutti i caratteri tra le doppie virgolette vanno estratti tali e quali, eccetto un unico caso: se incontrate un'occorrenza di \\" (backslash seguito da doppie virgolette), allora quelle doppie virgolette **non** vanno interpretate come il segnale di fine stringa, ma nella stringa che state costruendo va inserito il carattere " (doppie virgolette). 
+**Una nota importante sulle stringhe**: tutti i caratteri tra le doppie virgolette vanno estratti tali e quali, eccetto un unico caso: se incontrate un'occorrenza di \\" (backslash seguito da doppie virgolette), allora quelle doppie virgolette **non** vanno interpretate come il segnale di fine stringa, ma nella stringa che state costruendo va inserito il carattere " (doppie virgolette), **non** preceduto dal carattere \\ (backslash). Sotto riportiamo alcuni esempi.
 
 **Nota bene**: abbiamo semplificato il formato json originale, che considera molti altri casi di caratteri preceduti da \ (i cosiddetti caratteri *escaped*). E' quindi importante seguire la nostra specifica, non quelle che trovate online!
 
