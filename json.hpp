@@ -59,6 +59,7 @@ public:
 	void set_list();
 	void set_dictionary();
 	void push_front(json const&);
+	void push_back(json const&);
 	void insert(std::pair<std::string,json> const&);
 
 private:
