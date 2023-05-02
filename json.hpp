@@ -6,7 +6,7 @@ struct json_exception {
 	std::string msg;
 };
 
-class JSON {
+class json {
 
 public:
 	
@@ -15,13 +15,13 @@ public:
 	struct const_list_iterator;
 	struct const_dict_iterator;
 	
-	JSON();
-	JSON(JSON const&);
-	JSON(JSON&&);
-	~JSON();
+	json();
+	json(json const&);
+	json(json&&);
+	~json();
 	
-	JSON& operator=(JSON const&);
-	JSON& operator=(JSON&&);
+	json& operator=(json const&);
+	json& operator=(json&&);
 
 	bool is_list() const;
 	bool is_dictionary() const;
@@ -30,8 +30,8 @@ public:
 	bool is_bool() const;
 	bool is_null() const;
 
-	JSON const& operator[](std::string const&) const;
-	JSON& operator[](std::string const&);
+	json const& operator[](std::string const&) const;
+	json& operator[](std::string const&);
 
 	list_iterator begin_list();
 	const_list_iterator begin_list() const;
@@ -58,8 +58,8 @@ public:
 	void set_null();
 	void set_list();
 	void set_dictionary();
-	void push_front(JSON const&);
-	void insert(std::pair<std::string,JSON> const&);
+	void push_front(json const&);
+	void insert(std::pair<std::string,json> const&);
 
 private:
 		
@@ -68,5 +68,5 @@ private:
 	
 };
 
-std::ostream& operator<<(std::ostream& lhs, JSON const& rhs);
-std::istream& operator>>(std::istream& lhs, JSON& rhs);
+std::ostream& operator<<(std::ostream& lhs, json const& rhs);
+std::istream& operator>>(std::istream& lhs, json& rhs);
