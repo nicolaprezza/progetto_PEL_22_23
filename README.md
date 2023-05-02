@@ -45,7 +45,7 @@ Per esempio, considerate il seguente file json:
     [
         "una stringa con virgolette \"escaped\"",
         "seconda stringa senza escape",
-        "terza stringa \n con altri\" escape",
+        "terza stringa con altri\" escape",
         "doppio \\" escape",
     ]
 
@@ -53,12 +53,12 @@ Nell’esempio sopra, le quattro stringhe da estrarre dal file sono, rispettivam
 
 	una stringa con virgolette "escaped"
 	seconda stringa senza escape
-	terza stringa \n con altri" escape
+	terza stringa con altri" escape
 	doppio \" escape
 
-**Nota.** Nel primo caso, i doppi apici preceduti da ‘\\’ non sono stati interpretati come un comando di fine/inizio stringa, ma sono stati estratti e fanno parte della stringa restituita (nota: i caratteri \\ non sono invece stati inseriti nella stringa, perchè precedevano i doppi apici). Nel secondo caso non ci sono caratteri \. Nel terzo caso, la sotto-stringa \\n non viene interpretata in un modo speciale, ma questi due caratteri vengono estratti tali e quali. La sotto-stringa \\" invece è trattata in modo speciale ed è stato estratto solo il carattere ". Nel quarto caso (doppio escape \\\\ seguito da "), vengono estratti i due caratteri \\" (la prima backslash \ non è seguita da " quindi viene interpretata come un carattere normale; la seconda è seguita da " e quindi la coppia \\" viene interpretata come un caso particolare e viene estratto solo il simbolo ").
+**Nota.** Nel primo caso, i doppi apici preceduti da ‘\\’ non sono stati interpretati come un comando di fine/inizio stringa, ma sono stati estratti e fanno parte della stringa restituita (nota: i caratteri \\ non sono invece stati inseriti nella stringa, perchè precedevano i doppi apici). Nel secondo caso non ci sono caratteri \. Nel terzo caso, la sotto-stringa \\" è trattata in modo speciale ed è stato estratto solo il carattere ". Nel quarto caso (doppio escape \\\\ seguito da "), vengono estratti i due caratteri \\" (la prima backslash \ non è seguita da " quindi viene interpretata come un carattere normale; la seconda è seguita da " e quindi la coppia \\" viene interpretata come un caso particolare e viene estratto solo il simbolo ").
 
-  
+**Nota** I caratteri speciali "\n" (e simili) non fanno eccezione! se il file json contiene una stringa in cui compare \\n, ad esempio, vanno estratti **due** caratteri: backslash (\) seguito dal carattere n, **non** va estratto il singolo carattere '\n' (che significa newline). Di nuovo, questa è una modifica rispetto al formato originale che abbiamo introdotto per semplificare la scrittura del parser.
 
 ### Dizionari 
 
