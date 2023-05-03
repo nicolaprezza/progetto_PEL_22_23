@@ -11,9 +11,9 @@ class json {
 public:
 	
 	struct list_iterator;
-	struct dict_iterator;
+	struct dictionary_iterator;
 	struct const_list_iterator;
-	struct const_dict_iterator;
+	struct const_dictionary_iterator;
 	
 	json();
 	json(json const&);
@@ -38,10 +38,10 @@ public:
 	list_iterator end_list();
 	const_list_iterator end_list() const;
 
-	dict_iterator begin_dict();
-	const_dict_iterator begin_dict() const;
-	dict_iterator end_dict();
-	const_dict_iterator end_dict() const;
+	dictionary_iterator begin_dictionary();
+	const_dictionary_iterator begin_dictionary() const;
+	dictionary_iterator end_dictionary();
+	const_dictionary_iterator end_dictionary() const;
 
 	double& get_number();
 	double const& get_number() const;
