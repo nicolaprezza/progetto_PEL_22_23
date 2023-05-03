@@ -152,11 +152,11 @@ Ricordate che json::impl ha accesso ai membri privati di json, quindi se lo desi
 
 ---
     json::list_iterator;
-    json::dict_iterator;
+    json::dictionary_iterator;
     json::const_list_iterator;
-    json::const_dict_iterator;
+    json::const_dictionary_iterator;
 
-Questi sono dei forward iterator che permettono di navigare le liste e i dizionari contenuti in un oggetto json (maggiori dettagli sono descritti sotto, nei metodi begin_list(), end_list(), begin_dict(), end_dict()). Su ognuno di questi iteratori, definire (come visto a lezione) i metodi per modificare gli iteratori ed accedere al loro contenuto (in particolare: operator++ prefix e postfix, operator\*, operator->, operator==, operator!=).
+Questi sono dei forward iterator che permettono di navigare le liste e i dizionari contenuti in un oggetto json (maggiori dettagli sono descritti sotto, nei metodi begin_list(), end_list(), begin_dictionary(), end_dictionary()). Su ognuno di questi iteratori, definire (come visto a lezione) i metodi per modificare gli iteratori ed accedere al loro contenuto (in particolare: operator++ prefix e postfix, operator\*, operator->, operator==, operator!=).
 
   
 ### Metodi pubblici di json
@@ -233,14 +233,14 @@ I seguenti metodi permettono di ottenere iteratori all’inizio e alla fine dell
 
 ---
 
-In modo analogo, se l’oggetto è un dizionario (is_dictionary() restituisce true), usiamo gli iteratori dict_iterator e const_dict_iterator per accedere alle coppie contenute nel dizionario (le coppie sono di tipo std::pair&lt;std::string,json>). I seguenti metodi permettono di ottenere iteratori all’inizio e alla fine del dizionario. Se  is_dictionary() restituisce false, questi metodi devono lanciare un’eccezione json_exception (con messaggio msg a piacere).
+In modo analogo, se l’oggetto è un dizionario (is_dictionary() restituisce true), usiamo gli iteratori dictionary_iterator e const_dictionary_iterator per accedere alle coppie contenute nel dizionario (le coppie sono di tipo std::pair&lt;std::string,json>). I seguenti metodi permettono di ottenere iteratori all’inizio e alla fine del dizionario. Se  is_dictionary() restituisce false, questi metodi devono lanciare un’eccezione json_exception (con messaggio msg a piacere).
 
 **Attenzione.** A differenza degli iteratori su lista, in questo caso non è importante l’ordine in cui vengono immagazzinati e visitati gli elementi del dizionario.
 
-    json::dict_iterator json::begin_dict();
-    json::const_dict_iterator json::begin_dict() const;
-    json::dict_iterator json::end_dict();
-    json::const_dict_iterator json::end_dict() const;
+    json::dictionary_iterator json::begin_dictionary();
+    json::const_dictionary_iterator json::begin_dictionary() const;
+    json::dictionary_iterator json::end_dictionary();
+    json::const_dictionary_iterator json::end_dictionary() const;
 
   
 ---
