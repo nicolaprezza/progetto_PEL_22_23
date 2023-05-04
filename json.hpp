@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <limits>
+#include <cassert>
 
 struct json_exception {
 	std::string msg;
