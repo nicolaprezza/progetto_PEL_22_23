@@ -14,7 +14,7 @@ Nelle due sezioni seguenti vengono introdotti il formato json e la descrizione d
 
 Si vuole scrivere un parser per una variante _semplificata_ di json – un formato testuale per lo scambio di informazione sul Web. **Importante**: usate la descrizione json fornita di seguito e non quella trovata in rete.
 
-Un file json contiene dati in una struttura ad albero (ricorsiva), simile al formato XML. A differenza di XML, il formato json ammette sia **liste** di valori che **dizionari** (definiti nel dettaglio qui sotto). Globalmente, un file json è una lista oppure un dizionario. 
+Un file json contiene dati in una struttura ad albero (ricorsiva), simile al formato XML. A differenza di XML, il formato json ammette sia **liste** di valori che **dizionari** (definiti nel dettaglio qui sotto). Globalmente, un file json è una lista, un dizionario, un numero (double), un booleano, una stringa, oppure null.
 
 ### Liste
 
@@ -385,7 +385,7 @@ allora, il seguente codice è valido e deve stampare a schermo “4”:
 
     json j;
     std::cin >> j;
-    json& y = *(j.begin_list()+1);
+    json& y = *(++j.begin_list());
     std::cout << y["quarta chiave"]["a"];
 
 
@@ -399,7 +399,7 @@ contiene i dati del file json
 
 e `j` è la variabile di tipo `json` definita sopra, allora dopo l’assegnamento
 
-    (*j.begin_list()+1)["prima chiave"] = z
+    (*(++j.begin_list()))["prima chiave"] = z
 
  
 La variabile `j` deve contenere i seguenti dati: 
