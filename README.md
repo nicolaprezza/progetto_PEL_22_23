@@ -214,9 +214,13 @@ Se l’oggetto è un dizionario (`is_dictionary()` restituisce `true`), questo m
 
 **Nota.** Non è un problema se questo metodo scorre tutto il contenuto del dizionario (per esempio, se avete implementato il dizionario tramite una lista). Non ci aspettiamo che questo metodo sia particolarmente efficiente (a differenza del metodo `json::insert`, vedi sotto).
 
-Se il dizionario non contiene nessuna coppia chiave-valore la cui chiave è uguale a `key`, questo metodo deve inserire nel dizionario una nuova coppia chiave-valore la cui chiave è `key` e il cui valore è un `json` costruito con il costruttore di default (ossia, un `json` di tipo null). Infine, il metodo restituisce una reference a questo nuovo `json` appena costruito.
+Se il dizionario non contiene nessuna coppia chiave-valore la cui chiave è uguale a `key`, allora:
 
-Se l’oggetto non è un dizionario, lanciamo un’eccezione `json_exception` (con messaggio `msg` a piacere).
+- il metodo `operator[]` deve inserire nel dizionario una nuova coppia chiave-valore la cui chiave è `key` e il cui valore è un `json` costruito con il costruttore di default (i.e., un `json` il cui contenuto è `null`), ed infine restituire una reference a questo nuovo `json` appena costruito;
+- il metodo `operator[] const` deve lanciare invece un'eccezione non potendo effettuare nessun inserimento.
+
+In ogni caso, se l’oggetto non è un dizionario, lanciamo un’eccezione `json_exception` (con messaggio `msg` a piacere)
+se il metodo `operator[]` viene invocato.
 
 ---
  
