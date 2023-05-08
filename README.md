@@ -474,7 +474,7 @@ Il modulo moodle per la consegna verrà aperto a breve e potrete cominciare a co
 
 Ogni metodo da voi scritto verrà testato da noi in modo accurato, su molti input diversi (file json sia in formato valido che non). 
 
-Compileremo il vostro codice con lo standard C++14 (--std=c++14).
+Compileremo il vostro codice con lo standard C++ 17 (compiler flag `-std=c++17`).
 
 Un metodo che porta all’interruzione inaspettata del codice (esempio, segmentation fault) viene valutato 0 punti. Un metodo non implementato viene valutato 0 punti. Alcuni metodi, come quelli su iteratori, sono molto importanti perché ci permettono di testare il vostro codice (accedendo al contenuto del container): fate attenzione ad implementarli correttamente, altrimenti non avremo modo di testare il vostro codice. 
 
