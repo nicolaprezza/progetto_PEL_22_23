@@ -50,7 +50,7 @@ Per esempio, considerate il seguente file json:
         "una stringa con \n virgolette \"escaped\"",
         "seconda stringa senza escape",
         "terza stringa con altri\" escape",
-        "doppio \\" escape",
+        "doppio \\" escape"
     ]
 
 Nell’esempio sopra, le quattro stringhe da estrarre dal file (ossia, i caratteri da inserire nelle `std::string` che andrete a costruire) sono, rispettivamente: 
