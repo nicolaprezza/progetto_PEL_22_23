@@ -438,7 +438,7 @@ Noi vi forniamo un file json.hpp (in questo repository GitHub) che contiene le d
 
 Il vostro compito sarà quello di implementare il file json.cpp, contenente la definizione di tutti i metodi/tipi descritti sopra. Note importanti: 
 
-1. json.cpp può solo includere json.hpp. Non può contenere nessun altro #include e nessuna macro (in generale, nessun codice preceduto da #, eccetto `#include json.hpp`). Tutti gli include e macro verranno automaticamente rimossi prima di compilare il vostro codice. Gli unici `#include` ammessi sono quelli presenti nel file json.hpp fornito da noi.
+1. json.cpp può solo includere json.hpp. Non può contenere nessun altro #include e nessuna macro (in generale, nessun codice preceduto da #, eccetto `#include "json.hpp"`). Tutti gli include e macro verranno automaticamente rimossi prima di compilare il vostro codice. Gli unici `#include` ammessi sono quelli presenti nel file json.hpp fornito da noi.
 2. json.cpp **non** deve definire la funzione `main`: saremo noi a scriverla per testare il vostro codice. Se definite la funzione `main`, il codice non compilerà.
 
 ### Formato e link per la consegna
