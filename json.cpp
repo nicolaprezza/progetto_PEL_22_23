@@ -3,7 +3,7 @@
 
 #include "json.hpp"
 
-std::string json_exception::msg;
+json_exception ex;
 
 // implementazione della struct impl
 
@@ -274,7 +274,7 @@ bool json::is_null() const {                        //IL JSON E DI TIPO NULL SE 
 
 double &json::get_number() {
     if(!is_number()){
-        json_exception::msg="il json non e di tipo numerico impossibile eseguire get_number()\n";
+        ex.msg="il json non e di tipo numerico impossibile eseguire get_number()\n";
         throw json_exception();
     }
     double &x = pimpl->numero;
@@ -283,7 +283,7 @@ double &json::get_number() {
 
 double const &json::get_number() const {
     if (!is_number()) {
-        json_exception::msg="il json non e di tipo numerico impossibile eseguire get_number()\n";
+        ex.msg="il json non e di tipo numerico impossibile eseguire get_number()\n";
         throw json_exception();
     }
     double const&x = pimpl->numero;
@@ -292,7 +292,7 @@ double const &json::get_number() const {
 
 bool &json::get_bool() {
     if(!is_bool()){
-        json_exception::msg="il json non e di tipo bool impossibile eseguire get_bool() \n";
+        ex.msg="il json non e di tipo bool impossibile eseguire get_bool() \n";
        throw json_exception();
     }
     bool& x=pimpl->booleano;
@@ -301,7 +301,7 @@ bool &json::get_bool() {
 
 bool const &json::get_bool() const {
     if(!is_bool()){
-        json_exception::msg="il json non e di tipo bool impossibile eseguire get_bool() \n";
+        ex.msg="il json non e di tipo bool impossibile eseguire get_bool() \n";
         throw json_exception();
     }
     bool const& x=pimpl->booleano;
@@ -310,7 +310,7 @@ bool const &json::get_bool() const {
 
 std::string &json::get_string() {
     if (!is_string()) {
-        json_exception::msg="il json non e di tipo string impossibile eseguire get_string() \n";
+        ex.msg="il json non e di tipo string impossibile eseguire get_string() \n";
         throw json_exception();
     }
     std::string &x = pimpl->stringa;
@@ -319,7 +319,7 @@ std::string &json::get_string() {
 
 std::string const &json::get_string() const {
     if (!is_string()) {
-        json_exception::msg="il json non e di tipo string impossibile eseguire get_string() \n";
+        ex.msg="il json non e di tipo string impossibile eseguire get_string() \n";
         throw json_exception();
     }
     std::string const&x = pimpl->stringa;
@@ -416,18 +416,18 @@ json &json::operator=(json && x) {
 }
 
 json const &json::operator[](const std::string & chiave) const {
-    if(!is_dictionary()){json_exception::msg="errore il json non e di tipo dizionario"; throw json_exception();}
+    if(!is_dictionary()){ex.msg="errore il json non e di tipo dizionario"; throw json_exception();}
     json::impl::json_dict::Pdict supp=pimpl->dizionario.head;
     while(supp!= nullptr) {
         if (supp->key == chiave) { return supp->val; }
         supp = supp->next;
     }
-    json_exception::msg="Errore elemento non trovato nel dizionario";
+    ex.msg="Errore elemento non trovato nel dizionario";
     throw json_exception();
 }
 
 json &json::operator[](const std::string & chiave) {
-    if(!is_dictionary()){json_exception::msg="errore il json non e di tipo dizionario"; throw json_exception();}
+    if(!is_dictionary()){ex.msg="errore il json non e di tipo dizionario"; throw json_exception();}
     json::impl::json_dict::Pdict supp=pimpl->dizionario.head;
     while(supp!= nullptr){
         if( supp->key==chiave){return supp->val;}
@@ -455,7 +455,7 @@ void json::push_front(const json & x) {
         nuovo->next= nullptr;
         this->pimpl->lista.aggiungi_testa(nuovo);
     }else{
-        json_exception::msg="il json non e di tipo lista ";
+        ex.msg="il json non e di tipo lista ";
         throw json_exception();
     }
 }
@@ -467,13 +467,13 @@ void json::push_back(const json & x) {
         nuovo->next= nullptr;
         pimpl->lista.aggiungi_coda(nuovo);
     }else{
-        json_exception::msg="il json non e di tipo lista";
+        ex.msg="il json non e di tipo lista";
         throw json_exception();
     }
 }
 
 void json::insert(const std::pair<std::string, json> & x) {
-    if(!is_dictionary()){json_exception::msg="Errore il json non e di tipo dizionario, eseguire prima una set_dictionary";throw json_exception();}
+    if(!is_dictionary()){ex.msg="Errore il json non e di tipo dizionario, eseguire prima una set_dictionary";throw json_exception();}
     auto nuovo=new json::impl::json_dict::cella_dict;
     nuovo->key=x.first;
     nuovo->val=x.second;
@@ -528,16 +528,16 @@ std::ostream& operator<<(std::ostream& lhs, json const& rhs) {
             do {
                 std::string chiave;
                 lhs >> simbolo;
-                if (simbolo != '"') {json_exception::msg="formato non valido per l acqusizione del json\n";std::cout<<json_exception::msg; throw json_exception();}
+                if (simbolo != '"') {ex.msg="formato non valido per l acqusizione del json\n";std::cout<<ex.msg; throw json_exception();}
                 getline(lhs, chiave, '"');
                 lhs >> simbolo;
-                if (simbolo != ':') {json_exception::msg="formato non valido per l acqusizione del json\n";std::cout<<json_exception::msg;throw json_exception();}
+                if (simbolo != ':') {ex.msg="formato non valido per l acqusizione del json\n";std::cout<<ex.msg;throw json_exception();}
                 json convertito;
                 lhs >> convertito;
                 rhs.insert({chiave,convertito});
                 lhs >> simbolo;
             } while (simbolo == ',');
-            if (simbolo != '}') {json_exception::msg="formato non valido per l acqusizione del json\n";std::cout<<json_exception::msg;throw json_exception();}
+            if (simbolo != '}') {ex.msg="formato non valido per l acqusizione del json\n";std::cout<<ex.msg;throw json_exception();}
         }
 
     }
@@ -552,7 +552,7 @@ std::ostream& operator<<(std::ostream& lhs, json const& rhs) {
                 rhs.push_back(convertito);
                 lhs >> simbolo;
             } while (simbolo == ',');
-            if (simbolo!= ']') {json_exception::msg="formato non valido per l acqusizione del json\n";std::cout<<json_exception::msg;throw json_exception();}
+            if (simbolo!= ']') {ex.msg="formato non valido per l acqusizione del json\n";std::cout<<ex.msg;throw json_exception();}
         }
     }
 
@@ -589,9 +589,9 @@ std::ostream& operator<<(std::ostream& lhs, json const& rhs) {
         while (lhs.peek() != -1 && std::isalpha(lhs.peek())) {
             n += lhs.get();
         }
-        if (n != "null") {json_exception::msg="formato non valido per l acqusizione del json\n";std::cout<<json_exception::msg;throw json_exception();}
+        if (n != "null") {ex.msg="formato non valido per l acqusizione del json\n";std::cout<<ex.msg;throw json_exception();}
         rhs.set_null();
-    } else {json_exception::msg="formato non valido per l acqusizione del json\n";std::cout<<json_exception::msg;throw json_exception();}
+    } else {ex.msg="formato non valido per l acqusizione del json\n";std::cout<<ex.msg;throw json_exception();}
 
     return lhs;
 }
